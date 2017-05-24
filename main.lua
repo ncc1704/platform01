@@ -21,7 +21,8 @@ physics.addBody(Grond1, "static", {density=.1, bounce=0.1, friction=.2 })
 Grond1.y = display.contentHeight-82
 
 -- Obstakel
-DING = display.newRect (display.contentWidth/2,display.contentHeight/2,100,100)
+DING = display.newRect (display.contentWidth/3,display.contentHeight/2,100,100)
+DING.anchorX = 0
 DING.anchorY = 0
 physics.addBody(DING, "dynamic", {density=.1, bounce=0.1, friction=.2 })
 DING:setFillColor (255/255,1/255,255/255) -- BLAUW
@@ -49,19 +50,26 @@ function ButtonR:touch(event)
 
     if event.phase == "began" then
         -- This happens on finger touching
-        if DING.x>0 then
+        if DING.x<display.contentWidth/2 then
         	DING.x=DING.x+20
+        	elseif DING.x > (display.contentWidth/2-2) then
+        		Lucht.x=Lucht.x-20
+        		Grond1.x=Grond1.x-20
+        	end
         end
+    end
         print "RECHTS"
-    elseif event.phase == "ended" then
+
+    --elseif event.phase == "ended" then
+
             -- This happens when the finger is lifted
      print "RECHTS UIT"   
     
-    end
+   
 
     -- if you want to prevent the touch event from propagating (aka triggering other images touch event) you must return true
     return true
-end
+
 
 function ButtonL:touch(event)
 
@@ -69,6 +77,10 @@ function ButtonL:touch(event)
         -- This happens on finger touching
         if DING.x>50 then
         	DING.x=DING.x-20
+        	elseif DING.x <=100 and Lucht.x<0 then
+        		
+        		Lucht.x=Lucht.x+20
+        		Grond1.x=Grond1.x+20
         	end
         print "LINKS"
     elseif event.phase == "ended" then
@@ -81,7 +93,7 @@ function ButtonL:touch(event)
     return true
  end
 
-
+end
 
 
 ButtonL:addEventListener( "touch", ButtonL )
